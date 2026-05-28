@@ -1,0 +1,67 @@
+import wollok.game.*
+import personaje.*
+import direcciones.*
+
+describe "Tests del personaje" {
+	method initialize() {
+		game.clear()
+		game.height(10)
+		game.width(10)
+
+		personaje.position(game.at(5,5))
+	}
+
+	test "Personajemover arriba" {
+		personaje.mover(arriba)
+
+		assert.equals(game.at(5,6), personaje.position())
+	}
+
+	test "Personaje mover abajo" {
+		personaje.mover(abajo)
+
+		assert.equals(game.at(5,4), personaje.position())
+	}
+
+	test "personaje mover izquierda" {
+		personaje.mover(izquierda)
+
+		assert.equals(game.at(4,5), personaje.position())
+	}
+
+	test "personaje mover derecha" {
+		personaje.mover(derecha)
+		assert.equals(game.at(6,5), personaje.position())
+	}
+
+
+	test "personaje no sale de la pantalla por arriba" {
+		personaje.position(game.at(5,9))
+
+		assert.throwsException({personaje.mover(arriba)})
+		assert.equals(game.at(5,9), personaje.position())
+	}
+
+	test "personaje no sale de la pantalla por abajo" {
+		personaje.position(game.at(5,0))
+
+		assert.throwsException({personaje.mover(abajo)})
+		assert.equals(game.at(5,0), personaje.position())
+	}
+
+	test "personaje no sale de la pantalla por izquierda" {
+		personaje.position(game.at(0,5))
+
+		assert.throwsException({personaje.mover(izquierda)})
+		assert.equals(game.at(0,5), personaje.position())
+	}
+
+	test "personaje no sale de la pantalla por derecha" {
+		personaje.position(game.at(9,5))
+		
+		assert.throwsException({personaje.mover(derecha)})
+		assert.equals(game.at(9,5), personaje.position())
+	}
+
+}
+

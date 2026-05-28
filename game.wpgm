@@ -1,6 +1,11 @@
 import wollok.game.*
 import personaje.*
 import cultivos.*
+import direcciones.*
+import bonus.*
+import granja.*
+
+
 
 program farmville {
 	//  CONFIG	
@@ -9,10 +14,33 @@ program farmville {
 	game.width(10)
 	game.ground("ground.png")
 
+	// MERCADOS
+	const mercado1 = new Mercado(position = game.at(0, 0), monedas = 1000)
+    const mercado2 = new Mercado(position = game.at(9, 9), monedas = 250)
+    const mercado3 = new Mercado(position = game.at(9, 1), monedas = 500)
+	granja.agregarMercado(mercado1)
+	granja.agregarMercado(mercado2)
+	granja.agregarMercado(mercado3)
+    
 	//  VISUALES
- 	game.addVisualCharacter(personaje)
- 	game.addVisual(new Maiz()) // Se agrega a modo de prueba
- 	
+    game.addVisual(mercado1)
+	game.addVisual(mercado2)
+    game.addVisual(mercado3)
+	game.addVisualCharacter(personaje)
+
+	// Teclas
+	keyboard.m().onPressDo({personaje.cambiarSemilla(maizSemilla) personaje.sembrar()})
+	keyboard.t().onPressDo({personaje.cambiarSemilla(trigoBebe) personaje.sembrar()})
+	keyboard.o().onPressDo({personaje.cambiarSemilla(tomatoAdulto) personaje.sembrar()})
+
+	keyboard.r().onPressDo({personaje.regar()})
+	keyboard.c().onPressDo({personaje.cocechar()})
+	keyboard.a().onPressDo({personaje.ponerAspersor()})
+ 	keyboard.v().onPressDo({personaje.vender()})
+
+	keyboard.space().onPressDo({game.say(personaje, personaje.estado())})
+
+	
  	//  COMIENZA
 	game.start()
 }
