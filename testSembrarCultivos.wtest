@@ -1,0 +1,154 @@
+import wollok.game.*
+import personaje.*
+import granja.*
+import cultivos.*
+
+describe "Sembrar cultivos en la granja" {
+
+    method initialize() {
+		game.clear()
+		game.height(10)
+		game.width(10)
+
+		personaje.position(game.at(5,5))
+	}
+    
+    test "Sembrar un trigo" {
+        personaje.cambiarSemilla(trigoBebe)
+
+        assert.equals(trigoBebe, personaje.cultivoActual())
+        assert.equals([], granja.cultivos())
+
+        personaje.sembrar()
+
+        assert.equals(1, granja.cultivos().size())
+        assert.that(granja.hayCultivoEn(personaje.position()))
+    }
+
+    test "Sembrar un Trigo manualmente" {
+        const nuevoTrigo = new Trigo(position = game.center())
+        granja.agregarCultivo(nuevoTrigo)
+
+        assert.that(granja.tieneCultivo(nuevoTrigo))
+        assert.equals(1, granja.cultivos().size())
+    }
+    test "Sembrar un 2 trigos uno manualmente y el otro con el personaje" {
+        personaje.cambiarSemilla(trigoBebe)
+
+        assert.equals(trigoBebe, personaje.cultivoActual())
+        assert.equals([], granja.cultivos())
+
+        personaje.sembrar()
+
+        assert.equals(1, granja.cultivos().size())
+        assert.that(granja.hayCultivoEn(personaje.position()))
+
+        const nuevoTrigo = new Trigo(position = game.center())
+        granja.agregarCultivo(nuevoTrigo)
+
+        assert.that(granja.tieneCultivo(nuevoTrigo))
+        assert.equals(2, granja.cultivos().size())
+    }
+
+    test "Sembrar dos trigos en una misma posición" {
+        personaje.cambiarSemilla(trigoBebe)
+        personaje.sembrar()
+
+        assert.equals(1, granja.cultivos().size())
+        assert.that(granja.hayCultivoEn(personaje.position()))
+
+        // Deberia lanzar una excepción , ya que no se puede sembrar dos cultivos en una misma posición. 
+        assert.throwsException({personaje.sembrar()})
+    }
+
+    test "Sembrar un Tomato" {
+        personaje.cambiarSemilla(tomatoAdulto)
+
+        assert.equals(tomatoAdulto, personaje.cultivoActual())
+        assert.equals([], granja.cultivos())
+
+        personaje.sembrar()
+
+        assert.equals(1, granja.cultivos().size())
+        assert.that(granja.hayCultivoEn(personaje.position()))
+    }
+
+    test "Sembrar dos Tomato uno manualmente y el otro por el personaje" {
+        personaje.cambiarSemilla(tomatoAdulto)
+
+        assert.equals(tomatoAdulto, personaje.cultivoActual())
+        assert.equals([], granja.cultivos())
+
+        personaje.sembrar()
+
+        assert.equals(1, granja.cultivos().size())
+        assert.that(granja.hayCultivoEn(personaje.position()))
+
+        const nuevoTomato = new Tomato(position = game.center())
+        granja.agregarCultivo(nuevoTomato)
+
+        assert.that(granja.tieneCultivo(nuevoTomato))
+        assert.equals(2, granja.cultivos().size())
+    }
+
+    test "Sembrar dos Tomatos en una misma posición" {
+        personaje.cambiarSemilla(tomatoAdulto)
+        personaje.sembrar()
+
+        assert.equals(1, granja.cultivos().size())
+        assert.that(granja.hayCultivoEn(personaje.position()))
+
+        // Deberia lanzar una excepción , ya que no se puede sembrar dos cultivos en una misma posición. 
+        assert.throwsException({personaje.sembrar()})
+    }
+
+    test "Sembrar un Maiz" {
+        personaje.cambiarSemilla(maizSemilla)
+
+        assert.equals(maizSemilla, personaje.cultivoActual())
+        assert.equals([], granja.cultivos())
+
+        personaje.sembrar()
+
+        assert.equals(1, granja.cultivos().size())
+        assert.that(granja.hayCultivoEn(personaje.position()))
+    }
+
+    test "Sembrar un Maiz manualmente" {
+      const nuevoMaiz = new Maiz(position = game.center())
+        granja.agregarCultivo(nuevoMaiz)
+
+        assert.that(granja.tieneCultivo(nuevoMaiz))
+        assert.equals(1, granja.cultivos().size())
+    }
+
+    test "Sembrar un 2 Maiz uno manualmente y otro con el personaje" {
+        personaje.cambiarSemilla(maizSemilla)
+
+        assert.equals(maizSemilla, personaje.cultivoActual())
+        assert.equals([], granja.cultivos())
+
+        personaje.sembrar()
+
+        assert.equals(1, granja.cultivos().size())
+        assert.that(granja.hayCultivoEn(personaje.position()))
+
+        const nuevoMaiz = new Maiz(position = game.center())
+        granja.agregarCultivo(nuevoMaiz)
+
+        assert.that(granja.tieneCultivo(nuevoMaiz))
+        assert.equals(2, granja.cultivos().size())
+    }
+    test "Sembrar dos Maiz en una misma posición" {
+        personaje.cambiarSemilla(maizSemilla)
+        personaje.sembrar()
+
+        assert.equals(1, granja.cultivos().size())
+        assert.that(granja.hayCultivoEn(personaje.position()))
+
+        // Deberia lanzar una excepción , ya que no se puede sembrar dos cultivos en una misma posición. 
+        assert.throwsException({personaje.sembrar()})
+    }
+}
+
+

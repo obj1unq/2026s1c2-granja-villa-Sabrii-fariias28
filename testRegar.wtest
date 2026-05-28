@@ -1,0 +1,171 @@
+import wollok.game.*
+import personaje.*
+import granja.*
+import cultivos.*
+
+describe "El personaje riega cultivos " {
+  method initialize() {
+		game.clear()
+		game.height(10)
+		game.width(10)
+
+		personaje.position(game.center())
+	}
+
+  test "Regar un trigo" {
+    //En este caso,  al regar el cultivo cambia de estado del trigo a trigoEvolucion1 y cambia de imagen.
+    const nuevoTrigo = new Trigo(position = game.center())
+    granja.agregarCultivo(nuevoTrigo)
+    personaje.position(game.center())
+
+    assert.equals(trigoBebe,nuevoTrigo.estadoTrigo())
+    assert.that(granja.tieneCultivo(nuevoTrigo))
+    assert.equals(1, granja.cultivos().size())
+    assert.equals("wheat_0.png", nuevoTrigo.estadoTrigo().image())
+
+    personaje.regar()
+
+    assert.equals(trigoEvolucion1,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_1.png", nuevoTrigo.estadoTrigo().image())
+  }
+
+  test "Regar un trigo en Evolucion1" {
+    //En este caso,  al regar 2 veces el cultivo cambia el estado del trigo a trigo Evolucion 2 y cambia de imagen.
+    const nuevoTrigo = new Trigo(position = game.center())
+    granja.agregarCultivo(nuevoTrigo)
+    personaje.position(game.center())
+
+    assert.equals(trigoBebe,nuevoTrigo.estadoTrigo())
+    assert.that(granja.tieneCultivo(nuevoTrigo))
+    assert.equals(1, granja.cultivos().size())
+    assert.equals("wheat_0.png", nuevoTrigo.estadoTrigo().image())
+
+    personaje.regar()
+
+    assert.equals(trigoEvolucion1,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_1.png", nuevoTrigo.estadoTrigo().image())
+
+    personaje.regar()
+
+    assert.equals(trigoEvolucion2,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_2.png", nuevoTrigo.estadoTrigo().image())
+  }
+
+  test "Regar un trigo en Evolucion2" {
+    //En este caso,  al regar 3 veces el mismo cultivo cambia el estado del trigo a trigoEvolucion3 y cambia de imagen.
+    const nuevoTrigo = new Trigo(position = game.center())
+    granja.agregarCultivo(nuevoTrigo)
+    personaje.position(game.center())
+
+    assert.equals(trigoBebe,nuevoTrigo.estadoTrigo())
+    assert.that(granja.tieneCultivo(nuevoTrigo))
+    assert.equals(1, granja.cultivos().size())
+    assert.equals("wheat_0.png", nuevoTrigo.estadoTrigo().image())
+
+    personaje.regar()
+
+    assert.equals(trigoEvolucion1,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_1.png", nuevoTrigo.estadoTrigo().image())
+    
+    personaje.regar()
+
+    assert.equals(trigoEvolucion2,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_2.png", nuevoTrigo.estadoTrigo().image())
+
+    personaje.regar()
+
+    assert.equals(trigoEvolucion3,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_3.png", nuevoTrigo.estadoTrigo().image())
+  }
+
+  test "Regar un trigo en Evolucion3" {
+    //En este caso,  al regar 4 veces el mismo cultivo cambia el estado del trigo a trigo Evolucion 3 y cambia de imagen.
+    const nuevoTrigo = new Trigo(position = game.center())
+    granja.agregarCultivo(nuevoTrigo)
+    personaje.position(game.center())
+
+    assert.equals(trigoBebe,nuevoTrigo.estadoTrigo())
+    assert.that(granja.tieneCultivo(nuevoTrigo))
+    assert.equals(1, granja.cultivos().size())
+    assert.equals("wheat_0.png", nuevoTrigo.estadoTrigo().image())
+
+    personaje.regar()
+
+    assert.equals(trigoEvolucion1,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_1.png", nuevoTrigo.estadoTrigo().image())
+    
+    personaje.regar()
+
+    assert.equals(trigoEvolucion2,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_2.png", nuevoTrigo.estadoTrigo().image())
+
+    personaje.regar()
+
+    assert.equals(trigoEvolucion3,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_3.png", nuevoTrigo.estadoTrigo().image())
+
+    personaje.regar()
+
+    assert.equals(trigoBebe,nuevoTrigo.estadoTrigo())
+    assert.equals("wheat_0.png", nuevoTrigo.estadoTrigo().image())
+  }
+
+  test "Regar un tomato" {
+    //En este caso, al regar no deberia cambiar la imagen solo se mueve un lugar hacia abajo.
+    const nuevoTomato = new Tomato(position = game.at(5,5))
+    granja.agregarCultivo(nuevoTomato)
+
+    assert.that(granja.tieneCultivo(nuevoTomato))
+    assert.equals(1, granja.cultivos().size())
+    assert.equals("tomaco.png", nuevoTomato.estadoTomato().image())
+
+    personaje.position(game.at(5,5))
+    personaje.regar()
+
+    assert.equals("tomaco.png", nuevoTomato.estadoTomato().image())
+
+    personaje.position(game.at(5,4))
+
+    assert.equals(personaje.position(),nuevoTomato.position() )
+  }
+
+  test "Regar un tomato al final de la y" {
+    //En este caso, al regar no deberia cambiar la imagen solo se mueve un lugar hacia abajo, pero como esta en el borde aparece arriba de todo
+    const nuevoTomato = new Tomato(position = game.at(5,0))
+    granja.agregarCultivo(nuevoTomato)
+
+    assert.that(granja.tieneCultivo(nuevoTomato))
+    assert.equals(1, granja.cultivos().size())
+    assert.equals("tomaco.png", nuevoTomato.estadoTomato().image())
+
+    personaje.position(game.at(5,0))
+    personaje.regar()
+
+    assert.equals("tomaco.png", nuevoTomato.estadoTomato().image())
+
+    personaje.position(game.at(5,9))
+
+    assert.equals(personaje.position(),nuevoTomato.position() )
+  }
+
+  test "Regar un Maiz" {
+    //En este caso,  al regar el cultivo cambia de estado del Maiz a maizMaduro y cambia de imagen.
+    const nuevoMaiz = new Maiz(position = game.center())
+    granja.agregarCultivo(nuevoMaiz)
+    personaje.position(game.center())
+
+    assert.equals(maizSemilla,nuevoMaiz.estadoMaiz())
+    assert.that(granja.tieneCultivo(nuevoMaiz))
+    assert.equals(1, granja.cultivos().size())
+    assert.equals("corn_baby.png", nuevoMaiz.estadoMaiz().image())
+
+    personaje.regar()
+
+    assert.equals(maizMaduro,nuevoMaiz.estadoMaiz())
+    assert.equals("corn_adult.png", nuevoMaiz.estadoMaiz().image())
+  }
+
+  test "Tira error si no hay nada para regar" {
+    assert.throwsException({personaje.regar()})
+  }
+}

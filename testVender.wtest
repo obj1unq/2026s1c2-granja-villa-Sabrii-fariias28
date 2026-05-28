@@ -1,0 +1,83 @@
+import wollok.game.*
+import personaje.*
+import cultivos.*
+import bonus.*
+
+
+describe "Vender cultivos" {
+    method initialize() {
+		game.clear()
+		game.height(10)
+		game.width(10)
+
+		personaje.position(game.center())
+	}
+    test "Vender maiz suma 150 monedas y vacia el inventario del personaje" {
+        const maiz = new Maiz(position = personaje.position())
+        maiz.sembrarse()
+        maiz.crecer()
+
+        personaje.cocechar()
+
+        assert.equals("Tengo " + 0 + " monedas, y " + 1 + " plantas para vender", personaje.estado())
+
+        personaje.vender()
+
+        assert.equals("Tengo " + 150 + " monedas, y " + 0 + " plantas para vender", personaje.estado())
+        assert.equals(150, personaje.totalMonedas())
+        assert.equals(0, personaje.cultivosCosechados().size())
+    }
+
+    test "Vender trigo evolucion 2 suma 100 monedas y vacia el inventario del personaje" {
+        const trigo = new Trigo(position = personaje.position())
+        trigo.sembrarse()
+        trigo.crecer()
+        trigo.crecer()
+
+        personaje.cocechar()
+
+        assert.equals("Tengo " + 0 + " monedas, y " + 1 + " plantas para vender", personaje.estado())
+
+        personaje.vender()
+
+        assert.equals("Tengo " + 100 + " monedas, y " + 0 + " plantas para vender", personaje.estado())
+        assert.equals(100, personaje.totalMonedas())
+        assert.equals(0, personaje.cultivosCosechados().size())
+    }
+
+    test "Vender trigo evolucion 3 suma 200 monedas y vacia el inventario." {
+        const trigo = new Trigo(position = personaje.position())
+        trigo.sembrarse()
+        trigo.crecer()
+        trigo.crecer()
+        trigo.crecer()
+
+        personaje.cocechar()
+
+        assert.equals("Tengo " + 0 + " monedas, y " + 1 + " plantas para vender", personaje.estado())
+
+        personaje.vender()
+
+        assert.equals(200, personaje.totalMonedas())
+        assert.equals("Tengo " + 200 + " monedas, y " + 0 + " plantas para vender", personaje.estado())
+        assert.equals(0, personaje.cultivosCosechados().size())
+    }
+
+    test "Vender tomato suma 80 monedas y vacia el invenatario" {
+        const tomato = new Tomato(position = personaje.position())
+        tomato.sembrarse()
+        personaje.cocechar()
+
+        assert.equals("Tengo " + 0 + " monedas, y " + 1 + " plantas para vender", personaje.estado())
+
+        personaje.vender()
+
+        assert.equals("Tengo " + 80 + " monedas, y " + 0 + " plantas para vender", personaje.estado())
+        assert.equals(80, personaje.totalMonedas())
+        assert.equals(0, personaje.cultivosCosechados().size())
+    }
+
+    //Me faltan hacer mas test... los que no de nada ninguna moneda y combinanr vender distintos cultivos...
+}
+
+

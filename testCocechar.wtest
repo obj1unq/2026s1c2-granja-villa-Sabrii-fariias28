@@ -1,0 +1,91 @@
+import wollok.game.*
+import personaje.*
+import granja.*
+import cultivos.*
+
+describe "Tests de cocecha" {
+  method initialize() {
+	game.clear()
+	game.height(10)
+	game.width(10)
+
+	personaje.position(game.at(5,5))
+  }
+
+  test "Cocechar maiz adulto" {
+    const maiz = new Maiz(position = personaje.position())
+    maiz.sembrarse()
+
+    assert.notThat(maiz.esCocechable())
+
+    maiz.crecer()
+
+    assert.that(maiz.esCocechable())
+
+    personaje.cocechar()
+
+    assert.notThat(granja.hayCultivoEn(personaje.position()))
+    assert.equals(1, personaje.cultivosCosechados().size())
+  }
+
+  test "No cocecha maiz sin crecer" {
+    const maiz = new Maiz(position = personaje.position())
+    maiz.sembrarse()
+
+    assert.notThat(maiz.esCocechable())
+
+    personaje.cocechar()
+
+    assert.that(granja.hayCultivoEn(personaje.position()))
+    assert.equals(0, personaje.cultivosCosechados().size())
+  }
+
+  test "Cocechar trigo evolucion 2" {
+    const trigo = new Trigo(position = personaje.position())
+    trigo.sembrarse()
+
+    assert.notThat(trigo.esCocechable())
+
+    trigo.crecer()
+    trigo.crecer()
+
+    assert.that(trigo.esCocechable())
+
+    personaje.cocechar()
+
+    assert.notThat(granja.hayCultivoEn(personaje.position()))
+    assert.equals(1, personaje.cultivosCosechados().size())
+  }
+
+  test "No cocecha trigo evolucion 1" {
+
+    const trigo = new Trigo(position = personaje.position())
+
+    trigo.sembrarse()
+    assert.notThat(trigo.esCocechable())
+
+    trigo.crecer()
+    assert.notThat(trigo.esCocechable())
+
+    personaje.cocechar()
+
+    assert.that(granja.hayCultivoEn(personaje.position()))
+    assert.equals(0, personaje.cultivosCosechados().size())
+  }
+
+  test "Tomato siempre se puede cocechar" {
+    const tomato = new Tomato(position = personaje.position())
+
+    tomato.sembrarse()
+    assert.that(tomato.esCocechable())
+
+    personaje.cocechar()
+
+    assert.notThat(granja.hayCultivoEn(personaje.position()))
+    assert.equals(1, personaje.cultivosCosechados().size())
+  }
+
+  test "Tira error si no hay nada para cocechar" {
+   assert.throwsException({ personaje.cocechar() })
+  }
+}

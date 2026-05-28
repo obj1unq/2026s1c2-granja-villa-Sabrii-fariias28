@@ -1,0 +1,14 @@
+import wollok.game.*
+import personaje.*
+import granja.*
+import cultivos.*
+
+describe "Aspersores" {
+  test "Poner un aspersor" {
+    
+  }
+
+  test "Poner un aspersor y que las parcelas lindantes esten regados" {
+    
+  }
+}

@@ -1,0 +1,10 @@
+import wollok.game.*
+import personaje.*
+import cultivos.*
+import bonus.*
+
+describe "Mercados en la granja" {
+  test "Comprar 2 cultivos" {
+    
+  }
+}
