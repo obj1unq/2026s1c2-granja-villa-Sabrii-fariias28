@@ -4,6 +4,8 @@ import cultivos.*
 import bonus.*
 
 
+//Este test lo habia hecho antes de leer la consigna de mercado, asi que lo tengo que corregir
+
 describe "Vender cultivos" {
     method initialize() {
 		game.clear()
